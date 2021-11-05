@@ -3,7 +3,6 @@ package baseline;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -11,19 +10,15 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
-
-
-import javax.swing.*;
 import java.io.IOException;
 import java.net.URL;
 import java.time.LocalDate;
+
 import java.util.ResourceBundle;
 
 
 public class GUIController implements Initializable {
-/*
-    @FXML
-    CheckBox completeCheckBox;
+
     @FXML
     Button setDescriptionButton;
     @FXML
@@ -48,11 +43,8 @@ public class GUIController implements Initializable {
     ListView<Item> itemList;
 
     ObservableList<Item> listAll = FXCollections.observableArrayList();
-    ObservableList<Item> listComplete = FXCollections.observableArrayList();
-    ObservableList<Item> listIncomplete = FXCollections.observableArrayList();
 
     Item currentItem;
-
     int numOfItems;
 
     @Override
@@ -62,6 +54,7 @@ public class GUIController implements Initializable {
         numOfItems = 0;
 
         addDatePicker.setValue(null);
+        itemList.setItems(listAll);
 
         itemList.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             currentItem = itemList.getSelectionModel().getSelectedItem();
@@ -84,31 +77,23 @@ public class GUIController implements Initializable {
     }
 
     @FXML
-    public void addItem() throws IOException {
-        if(numOfItems<100) {
+    public void addItem() {
             listAll.add(new Item(null, titleTextField.getText(), null, false));
             itemList.setItems(listAll);
             numOfItems++;
             refresh();
             setVisible();
-        }
-        else {
-            Parent root1 = FXMLLoader.load(getClass().getClassLoader().getResource("TooManyItemsWarning.fxml"));
-
-            Stage createStage = new Stage();
-            createStage.setScene(new Scene(root1));
-            createStage.show();
-        }
     }
+
 
     @FXML
     public void deleteItem() throws IOException {
-        if (numOfItems != 0) {
+        if (numOfItems > 0) {
             listAll.remove(itemList.getSelectionModel().getSelectedItem());
             numOfItems--;
         }
 
-        else {
+        if (numOfItems <= 0) {
             Parent root1 = FXMLLoader.load(getClass().getClassLoader().getResource("NoItemsWarning.fxml"));
 
             Stage createStage = new Stage();
@@ -120,7 +105,7 @@ public class GUIController implements Initializable {
     }
 
     @FXML
-    public void clearItemList(ActionEvent actionEvent) {
+    public void clearItemList() {
         listAll.removeAll(itemList.getItems());
         numOfItems = 0;
         itemList.refresh();
@@ -139,39 +124,29 @@ public class GUIController implements Initializable {
         itemList.getSelectionModel().getSelectedItem().setItemDescription(description);
     }
 
-    public void setComplete(ActionEvent actionEvent) {
+    public void setComplete() {
 
-        if (!itemList.getSelectionModel().getSelectedItem().getComplete()) {
-            itemList.getSelectionModel().getSelectedItem().setComplete(true);
-        }
-        else {
-            itemList.getSelectionModel().getSelectedItem().setComplete(false);
-        }
+        itemList.getSelectionModel().getSelectedItem().setComplete(!itemList.getSelectionModel().getSelectedItem().getComplete());
     }
 
     @FXML
-    public void sortByAll(ActionEvent actionEvent) {
+    public void sortByAll() {
 
+        System.out.println("Sorting by complete");
         itemList.setItems(listAll);
-    }
-
-    public void sortByComplete(ActionEvent actionEvent) {
-
-        int currentListItemNumber = listAll.size();
-        System.out.println(currentListItemNumber);
-
-
-
-
 
     }
 
-    public void sortByIncomplete(ActionEvent actionEvent) {
+    public void sortByComplete() {
+        System.out.println("Sorting by complete");
 
+        //System.out.println(listComplete);
 
     }
 
-
+    public void sortByIncomplete() {
+        System.out.println("Sorting by incomplete");
+    }
 
     @FXML
     private void refresh(){
@@ -201,6 +176,4 @@ public class GUIController implements Initializable {
         completeLabel.setVisible(false);
         completeButton.setVisible(false);
     }
-
-*/
 }

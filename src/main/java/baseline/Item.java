@@ -3,7 +3,6 @@ package baseline;
 import java.time.LocalDate;
 
 public class Item {
-/*
     private String itemTitle;
     private LocalDate itemDate;
     private String itemDescription;
@@ -54,5 +53,5 @@ public class Item {
 
     public String toString(){
         return this.getItemTitle();
-    }*/
+    }
 }
