@@ -3,6 +3,7 @@ package baseline;
 import java.time.LocalDate;
 
 public class Item {
+
     private String itemTitle;
     private LocalDate itemDate;
     private String itemDescription;
@@ -39,9 +40,6 @@ public class Item {
     public boolean getComplete(){
         return this.complete;
     }
-
-
-
 
     public Item(LocalDate date, String title, String description, boolean complete){
 

@@ -3,19 +3,23 @@ package baseline;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
+import javafx.collections.transformation.FilteredList;
+
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
+import javafx.stage.Window;
+
 import java.io.IOException;
 import java.net.URL;
 import java.time.LocalDate;
 
 import java.util.ResourceBundle;
-
 
 public class GUIController implements Initializable {
 
@@ -132,20 +136,41 @@ public class GUIController implements Initializable {
     @FXML
     public void sortByAll() {
 
-        System.out.println("Sorting by complete");
+        System.out.println("Sorting by All");
         itemList.setItems(listAll);
 
     }
 
+    @FXML
     public void sortByComplete() {
         System.out.println("Sorting by complete");
 
-        //System.out.println(listComplete);
+        FilteredList<Item> listComplete = new FilteredList<>(listAll, item -> item.getComplete() == true);
+        itemList.setItems(listComplete);
 
     }
 
+    @FXML
     public void sortByIncomplete() {
         System.out.println("Sorting by incomplete");
+
+        FilteredList<Item> listIncomplete = new FilteredList<>(listAll, item -> item.getComplete() == false);
+        itemList.setItems(listIncomplete);
+    }
+
+
+    public void saveItemsAll() throws IOException {
+
+        System.out.println("Saving All Items");
+
+        Parent saveScreenParent = FXMLLoader.load(getClass().getClassLoader().getResource("SaveItemsScreen.fxml"));
+        Stage saveStage = new Stage();
+
+        saveStage.setTitle("Another window");
+        saveStage.setScene(new Scene(saveScreenParent));
+        saveStage.show();
+
+
     }
 
     @FXML
@@ -176,4 +201,5 @@ public class GUIController implements Initializable {
         completeLabel.setVisible(false);
         completeButton.setVisible(false);
     }
+
 }
