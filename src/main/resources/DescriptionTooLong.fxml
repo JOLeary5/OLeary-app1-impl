@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+
+<AnchorPane prefHeight="106.0" prefWidth="127.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="baseline.sortedList">
+   <children>
+      <Label layoutX="13.0" layoutY="7.0" prefHeight="112.0" prefWidth="483.0" text="Description too long . . .">
+         <font>
+            <Font size="47.0" />
+         </font>
+      </Label>
+   </children>
+</AnchorPane>

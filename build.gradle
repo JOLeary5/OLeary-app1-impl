@@ -21,7 +21,7 @@ javafx{
     version = '17.0.1'
 }
 application{
-    mainClass = "baseline.MainApp"
+    mainClass = "baseline.TodoListApplication"
 }
 
 

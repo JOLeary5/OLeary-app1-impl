@@ -1,0 +1,62 @@
+@startuml
+
+GUIController->TodoListApplication
+Item ->GUIController
+
+class TodoListApplication{
+-main(launch)
+-Stage(Primary stage)
+
+This class in the entry point for the GUI Controller
+which is the general body of the program
+}
+
+class GUIController{
+
+ this is the main class in the program
+ using an observable list and list view
+ the user is able to add, edit and remove
+ items from the list.
+
+ -ListView *itemList* @FXML
+ -ObservableList *listAll* @FXML
+ -int NumOfItems
+
+ -initialize();
+ -addItem();
+ -deleteItem();
+ -clearItemList();
+ -setDate()
+ -setDescription();
+ -setComplete();
+ -sortByAll()
+ -sortByComplete();
+ -sortByIncomplete();
+ -SaveItemsAll();
+ -Refresh();
+ -setVisible();
+ -setInvisible();
+}
+
+class Item{
+
+   this is the item Object that
+   will be stored in the ObservableList
+   in the main GUIController.
+
+ - String itemTitle;
+ - LocalDate itemDate;
+ - String getItemDescription;
+ - boolean complete;
+
+ -setItemTitle();
+ -getItemTitle();
+ -setItemDate();
+ -getItemDate();
+ -setItemDescription();
+ -getItemDescription();
+ -setComplete();
+ -getComplete();
+ -Item();
+}
+@enduml

@@ -1,3 +1,8 @@
+/*
+ *  UCF COP3330 Fall 2021 Application Assignment 1 Solution
+ *  Copyright 2021 Jonathan O'Leary
+ */
+
 package baseline;
 
 import javafx.collections.FXCollections;
@@ -8,13 +13,14 @@ import javafx.collections.transformation.FilteredList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Node;
+
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
-import javafx.stage.Window;
 
+import javax.swing.*;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.net.URL;
 import java.time.LocalDate;
@@ -23,6 +29,8 @@ import java.util.ResourceBundle;
 
 public class GUIController implements Initializable {
 
+    @FXML
+    Label itemTitleLabel;
     @FXML
     Button setDescriptionButton;
     @FXML
@@ -71,6 +79,7 @@ public class GUIController implements Initializable {
             }
 
             descriptionTextBox.setText(currentItem.getItemDescription());
+            itemTitleLabel.setText(currentItem.getItemTitle());
 
             if (currentItem.getComplete()) {
                 completeLabel.setText("[COMPLETE]");
@@ -83,7 +92,6 @@ public class GUIController implements Initializable {
     @FXML
     public void addItem() {
             listAll.add(new Item(null, titleTextField.getText(), null, false));
-            itemList.setItems(listAll);
             numOfItems++;
             refresh();
             setVisible();
@@ -98,10 +106,10 @@ public class GUIController implements Initializable {
         }
 
         if (numOfItems <= 0) {
-            Parent root1 = FXMLLoader.load(getClass().getClassLoader().getResource("NoItemsWarning.fxml"));
+            Parent noItemsRoot = FXMLLoader.load(getClass().getClassLoader().getResource("NoItemsWarning.fxml"));
 
             Stage createStage = new Stage();
-            createStage.setScene(new Scene(root1));
+            createStage.setScene(new Scene(noItemsRoot));
             createStage.show();
             setInvisible();
         }
@@ -120,57 +128,89 @@ public class GUIController implements Initializable {
     public void setDateButtonPress() {
        LocalDate date = addDatePicker.getValue();
        itemList.getSelectionModel().getSelectedItem().setItemDate(date);
+       dateLabel.setText(date.toString());
     }
 
     @FXML
-    public void setDescriptionAction() {
+    public void setDescriptionAction() throws IOException {
         String description = descriptionTextBox.getText();
-        itemList.getSelectionModel().getSelectedItem().setItemDescription(description);
+        if (description.length()<256) {
+            itemList.getSelectionModel().getSelectedItem().setItemDescription(description);
+            descriptionTextBox.setText(description);
+        }
+        else {
+            Parent root1 = FXMLLoader.load(getClass().getClassLoader().getResource("DescriptionTooLong.fxml"));
+
+            Stage createStage = new Stage();
+            createStage.setScene(new Scene(root1));
+            createStage.show();
+        }
     }
 
     public void setComplete() {
 
         itemList.getSelectionModel().getSelectedItem().setComplete(!itemList.getSelectionModel().getSelectedItem().getComplete());
+        if (currentItem.getComplete()) {
+            completeLabel.setText("[COMPLETE]");
+        } else{
+            completeLabel.setText("[INCOMPLETE]");
+        }
     }
 
     @FXML
     public void sortByAll() {
-
         System.out.println("Sorting by All");
-        itemList.setItems(listAll);
 
+        itemList.setItems(listAll);
     }
 
     @FXML
     public void sortByComplete() {
         System.out.println("Sorting by complete");
 
-        FilteredList<Item> listComplete = new FilteredList<>(listAll, item -> item.getComplete() == true);
+        FilteredList<Item> listComplete = new FilteredList<>(listAll, Item::getComplete);
         itemList.setItems(listComplete);
-
     }
 
     @FXML
     public void sortByIncomplete() {
         System.out.println("Sorting by incomplete");
 
-        FilteredList<Item> listIncomplete = new FilteredList<>(listAll, item -> item.getComplete() == false);
+        FilteredList<Item> listIncomplete = new FilteredList<>(listAll, item -> !item.getComplete());
         itemList.setItems(listIncomplete);
     }
 
 
-    public void saveItemsAll() throws IOException {
-
+    public void saveItemsAll(){
         System.out.println("Saving All Items");
 
-        Parent saveScreenParent = FXMLLoader.load(getClass().getClassLoader().getResource("SaveItemsScreen.fxml"));
-        Stage saveStage = new Stage();
+        JFrame parent = new JFrame();
 
-        saveStage.setTitle("Another window");
-        saveStage.setScene(new Scene(saveScreenParent));
-        saveStage.show();
+        JFileChooser fileChooser = new JFileChooser();
+        fileChooser.setDialogTitle("Specify a file to save");
 
+        int userSelection = fileChooser.showSaveDialog(parent);
 
+        if (userSelection == JFileChooser.APPROVE_OPTION){
+            try {
+                FileWriter fw = new FileWriter((fileChooser.getSelectedFile()+".txt"));
+                fw.write(String.valueOf(listAll));
+                fw.close();
+            }
+            catch (Exception ex){
+                ex.printStackTrace();
+            }
+        }
+    }
+
+    public void userGuideOpen() {
+        JFrame helpFrame = new JFrame();
+        ImageIcon icon =new ImageIcon(getClass().getClassLoader().getResource("HelpScreenPicture.PNG"));
+
+        JLabel label = new JLabel(icon);
+        helpFrame.add(label);
+        helpFrame.pack();
+        helpFrame.setVisible(true);
     }
 
     @FXML
@@ -189,6 +229,7 @@ public class GUIController implements Initializable {
         setDescriptionButton.setVisible(true);
         completeLabel.setVisible(true);
         completeButton.setVisible(true);
+        itemTitleLabel.setVisible(true);
     }
 
     private void setInvisible(){
@@ -200,6 +241,8 @@ public class GUIController implements Initializable {
         setDescriptionButton.setVisible(false);
         completeLabel.setVisible(false);
         completeButton.setVisible(false);
+        itemTitleLabel.setVisible(false);
     }
+
 
 }

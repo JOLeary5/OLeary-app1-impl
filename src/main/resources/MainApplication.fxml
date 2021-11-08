@@ -74,8 +74,8 @@
                         <Font size="18.0" />
                      </font>
                   </Label>
-                  <DatePicker fx:id="addDatePicker" layoutX="32.0" layoutY="20.0" />
-                  <Button fx:id="setDateButton" layoutX="219.0" layoutY="20.0" mnemonicParsing="false" onAction="#setDateButtonPress" text="Set Date" />
+                  <DatePicker fx:id="addDatePicker" layoutX="32.0" layoutY="33.0" />
+                  <Button fx:id="setDateButton" layoutX="218.0" layoutY="33.0" mnemonicParsing="false" onAction="#setDateButtonPress" text="Set Date" />
                   <Label fx:id="dateLabel" layoutX="144.0" layoutY="60.0" prefHeight="27.0" prefWidth="97.0" text=" - -">
                      <font>
                         <Font size="18.0" />
@@ -89,6 +89,7 @@
                         <Font size="18.0" />
                      </font>
                   </Label>
+                  <Label fx:id="itemTitleLabel" layoutX="18.0" layoutY="6.0" text="[Item Title]" />
                </children></AnchorPane>
         </items>
       </SplitPane>
@@ -106,7 +107,7 @@
           </Menu>
           <Menu mnemonicParsing="false" text="Help">
             <items>
-              <MenuItem mnemonicParsing="false" text="About" />
+              <MenuItem mnemonicParsing="false" onAction="#userGuideOpen" text="User Guide" />
             </items>
           </Menu>
         </menus>
